@@ -10,7 +10,7 @@ import com.linguatranslate.app.data.local.entity.TranslationHistoryEntity
 @Database(
     entities = [TranslationHistoryEntity::class, FavoriteTranslationEntity::class],
     version = 1,
-    exportSchema = true,
+    exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
