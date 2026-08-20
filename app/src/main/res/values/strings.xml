@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LinguaTranslate</string>
+    <string name="app_tagline">Translate anything, anywhere</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_conversation">Conversation</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="cd_microphone">Speak input</string>
+    <string name="cd_speaker">Speak translation aloud</string>
+    <string name="cd_copy">Copy translation</string>
+    <string name="cd_favorite">Add to favorites</string>
+    <string name="cd_share">Share translation</string>
+    <string name="cd_swap_languages">Swap languages</string>
+    <string name="cd_delete">Delete</string>
+
+    <string name="input_placeholder">Type or speak…</string>
+    <string name="translate_button">Translate</string>
+    <string name="listening">Listening…</string>
+    <string name="processing">Processing…</string>
+    <string name="translating">Translating…</string>
+
+    <string name="error_no_internet">No internet connection.</string>
+    <string name="error_speech_unavailable">Unable to recognize speech.</string>
+    <string name="error_translation_unavailable">Translation service is temporarily unavailable.</string>
+    <string name="error_mic_permission_denied">Microphone permission is required to use voice input.</string>
+    <string name="error_empty_text">Please enter some text to translate.</string>
+    <string name="error_same_language">Source and target languages must be different.</string>
+    <string name="error_tts_unavailable">%1$s voice is not installed on this device.</string>
+</resources>

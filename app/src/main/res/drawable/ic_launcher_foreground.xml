@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Globe -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,30 C68,30 79,41 79,55 C79,69 68,80 54,80 C40,80 29,69 29,55 C29,41 40,30 54,30 Z" />
+    <path
+        android:fillColor="#3B5BFE"
+        android:pathData="M54,34 C64,34 72,44 72,55 C72,66 64,76 54,76 C44,76 36,66 36,55 C36,44 44,34 54,34 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M35,50 L73,50 L73,54 L35,54 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M35,58 L73,58 L73,62 L35,62 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M52,34 L56,34 L56,76 L52,76 Z" />
+    <!-- Speech bubble accent -->
+    <path
+        android:fillColor="#FF6B5B"
+        android:pathData="M72,64 C80,64 86,70 86,78 C86,84 82,89 77,91 L79,96 L71,90 C63,89 58,84 58,78 C58,70 64,64 72,64 Z" />
+</vector>

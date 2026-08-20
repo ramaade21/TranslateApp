@@ -1,0 +1,14 @@
+# Copy this file to local.properties (which is gitignored) and set your
+# Android SDK path. Android Studio usually generates this automatically.
+sdk.dir=/path/to/Android/sdk
+
+# Optional: override the debug backend URL (defaults to 10.0.2.2:3000 for the emulator)
+LINGUATRANSLATE_BASE_URL_DEBUG=http://10.0.2.2:3000/
+
+# Optional: point release builds at your deployed backend instead of the placeholder
+LINGUATRANSLATE_BASE_URL_RELEASE=https://your-backend.onrender.com/
+
+# REQUIRED for the backend's APP_API_KEY check to pass. Must be the exact
+# same value as APP_API_KEY in backend/.env. Generate with:
+#   openssl rand -hex 32
+LINGUATRANSLATE_APP_API_KEY=
