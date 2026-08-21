@@ -134,6 +134,21 @@ describe("GET /health", () => {
     expect(res.status).toBe(200);
     expect(res.body.status).toBe("ok");
   });
+
+  it("is never redirected to HTTPS even in production without a secure connection (platform healthcheck probes hit the container over plain HTTP internally)", async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+    try {
+      const app = createApp(new MockProvider());
+      // No X-Forwarded-Proto header, simulating an internal healthcheck
+      // probe that bypasses the TLS-terminating edge entirely.
+      const res = await request(app).get("/health");
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe("ok");
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+    }
+  });
 });
 
 describe("APP_API_KEY protection", () => {
