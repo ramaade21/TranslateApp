@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: linguatranslate-backend
+    runtime: docker
+    rootDir: backend # monorepo: build context is the backend/ subfolder
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: APP_API_KEY
+        sync: false # set manually in Render dashboard - never commit this
+      - key: TRANSLATION_PROVIDER
+        value: libretranslate
+      - key: LIBRETRANSLATE_BASE_URL
+        value: https://libretranslate.com
+      - key: LIBRETRANSLATE_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: ""
+      - key: RATE_LIMIT_WINDOW_MS
+        value: "60000"
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: "60"
+      - key: TRANSLATE_RATE_LIMIT_PER_MINUTE
+        value: "20"
