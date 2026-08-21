@@ -36,6 +36,16 @@ export class MyMemoryProvider implements TranslationProvider {
       source = detected;
     }
 
+    // If the (possibly auto-detected) source turns out to equal the
+    // target, there's nothing to translate - some providers error on
+    // an identical langpair, so short-circuit instead of calling out.
+    // This matters especially for short/ambiguous input where the
+    // heuristic detector has no strong signal either way and defaults
+    // to English.
+    if (source === targetLanguage) {
+      return { translatedText: text, detectedLanguage: detected };
+    }
+
     const params = new URLSearchParams({
       q: text,
       langpair: `${source}|${targetLanguage}`,

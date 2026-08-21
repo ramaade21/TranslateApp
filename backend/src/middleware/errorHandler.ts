@@ -4,6 +4,13 @@ import { ApiError } from "../types";
 
 export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction): void {
   if (err instanceof ApiException) {
+    // Log server-side for visibility in platform logs (Railway/Render).
+    // Safe to log: this is the exact same message already sent to the
+    // client below, so logging it adds no new exposure - it just makes
+    // provider/validation failures diagnosable without guessing.
+    // eslint-disable-next-line no-console
+    console.warn(`[${err.code}] ${err.message}`);
+
     const body: ApiError = {
       success: false,
       error: { code: err.code, message: err.message },
