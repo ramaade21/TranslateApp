@@ -54,11 +54,23 @@ export function createApp(provider: TranslationProvider): Express {
   app.use(express.json({ limit: "256kb" }));
 
   // Global baseline limiter (defense in depth)...
+  //
+  // `validate: { trustProxy: false, xForwardedForHeader: false }` disables
+  // express-rate-limit's strict runtime check that the configured
+  // `trust proxy` hop count exactly matches the X-Forwarded-For chain
+  // length. On PaaS platforms like Railway/Render, the actual proxy
+  // topology can vary in ways that don't perfectly match a fixed
+  // `trust proxy` number, and without this, the library throws
+  // synchronously on every request - which isn't an ApiException, so it
+  // was surfacing as an opaque 500 on every single /api/translate call.
+  // Rate limiting itself still works correctly; this only silences the
+  // extra self-check.
   const globalLimiter = rateLimit({
     windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 60_000,
     max: Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 60,
     standardHeaders: true,
     legacyHeaders: false,
+    validate: { trustProxy: false, xForwardedForHeader: false },
     message: { success: false, error: { code: "RATE_LIMITED", message: "Too many requests." } },
   });
   app.use("/api", globalLimiter);
@@ -71,6 +83,7 @@ export function createApp(provider: TranslationProvider): Express {
     max: Number(process.env.TRANSLATE_RATE_LIMIT_PER_MINUTE) || 20,
     standardHeaders: true,
     legacyHeaders: false,
+    validate: { trustProxy: false, xForwardedForHeader: false },
     message: { success: false, error: { code: "RATE_LIMITED", message: "Too many translation requests. Please slow down." } },
   });
 

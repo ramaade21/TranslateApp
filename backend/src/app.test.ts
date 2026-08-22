@@ -156,7 +156,11 @@ describe("APP_API_KEY protection", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.APP_API_KEY = originalKey;
+    if (originalKey === undefined) {
+      delete process.env.APP_API_KEY;
+    } else {
+      process.env.APP_API_KEY = originalKey;
+    }
     process.env.NODE_ENV = originalEnv;
   });
 
@@ -202,5 +206,22 @@ describe("APP_API_KEY protection", () => {
 
     const res = await request(app).get("/health");
     expect(res.status).toBe(200);
+  });
+});
+
+describe("Proxy topology robustness", () => {
+  it("does not crash with a multi-hop X-Forwarded-For header (Railway/Render proxy topology)", async () => {
+    const app = createApp(new MockProvider());
+
+    // Simulates the kind of X-Forwarded-For chain a PaaS edge can add,
+    // which previously crashed express-rate-limit's internal trust-proxy
+    // validation into an uncaught 500 on every /api request.
+    const res = await request(app)
+      .post("/api/translate")
+      .set("X-Forwarded-For", "203.0.113.5, 10.0.0.1, 10.0.0.2")
+      .send({ text: "Good morning", sourceLanguage: "en", targetLanguage: "id" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
   });
 });
