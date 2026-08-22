@@ -53,6 +53,22 @@ export function createApp(provider: TranslationProvider): Express {
 
   app.use(express.json({ limit: "256kb" }));
 
+  // Explicitly forbid caching of every /api response, at every layer
+  // (browser, CDN, PaaS edge proxy). This was a real, confirmed bug:
+  // Railway's edge was caching /api/translate responses keyed on the
+  // exact request body, so identical text kept getting the answer
+  // from whichever provider was active the FIRST time that exact text
+  // was translated - even after the provider was switched and
+  // redeployed. Translation results can also depend on server-side
+  // config that changes over time, so they must never be cached.
+  app.use("/api", (_req, res, next) => {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("Surrogate-Control", "no-store");
+    next();
+  });
+
   // Global baseline limiter (defense in depth)...
   //
   // `validate: { trustProxy: false, xForwardedForHeader: false }` disables

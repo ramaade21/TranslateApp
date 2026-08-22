@@ -225,3 +225,16 @@ describe("Proxy topology robustness", () => {
     expect(res.body.success).toBe(true);
   });
 });
+
+describe("Cache prevention", () => {
+  it("sends no-store cache headers on /api responses, so no intermediary proxy/CDN can serve a stale translation for identical request text after the provider or its config changes", async () => {
+    const app = createApp(new MockProvider());
+
+    const res = await request(app)
+      .post("/api/translate")
+      .send({ text: "Good morning", sourceLanguage: "en", targetLanguage: "id" });
+
+    expect(res.headers["cache-control"]).toMatch(/no-store/);
+    expect(res.headers["pragma"]).toBe("no-cache");
+  });
+});
