@@ -24,6 +24,15 @@ export function requireAppApiKey(req: Request, res: Response, next: NextFunction
   // refuse to serve requests rather than silently running unprotected.
   if (!expected) {
     if (process.env.NODE_ENV === "production") {
+      // This responds directly rather than via next(err)/errorHandler,
+      // so without an explicit log line here it was invisible in
+      // platform logs (Railway/Render) - making a missing APP_API_KEY
+      // env var very hard to diagnose from the outside. Always log it.
+      // eslint-disable-next-line no-console
+      console.error(
+        "[SERVER_MISCONFIGURED] APP_API_KEY is not set. " +
+          "Set it in the platform's environment variables dashboard."
+      );
       res.status(500).json({
         success: false,
         error: { code: "SERVER_MISCONFIGURED", message: "Server is not configured correctly." },
